@@ -1,0 +1,728 @@
+FORMAT: 1A
+HOST: https://czchoapint222.prg-dc.dhl.com:6443
+AUTHOR: DHL eCommerce
+
+# DPI Shipping API
+Welcome at the Deutsche Post Shipping API. <br/><br/>
+To [Sign up](#introduction/access-&-sign-up) for becoming a DHL eCommerce API consumer and receive your credentials, please contact us via: [to-be-defined@@deutschepost.de](mailto:to-be-defined@@deutschepost.de). 
+You can contact us [here](#introduction/access-&-sign-up) for more details.<br/><br/> 
+___
+
+## About this API
+Deutsche Post provides this **Shipping API** to enable open integration channels for our customers, clients and partners. <br/><br/>
+The API is provided as **REST API** using **OAuth 2.0** for authentication and authorization and **JSON format** for request and response messages.<br/><br/>
+The API uses **HTTPS (over SSL) protocol**, the HTTP GET is used to retrieve data and HTTP POST is used to create, update or delete data. 
+<br/>
+    
+    >**Note:** *Usage of HTTP PUT and DELETE is not enabled.*
+
+___
+
+## Get Started
+1. [Sign up](#introduction/access-&-sign-up) for becoming a DHL eCommerce API consumer and receive your credentials. <br/><br/>
+    >**Note:** *Please provide your DHL eCommerce customer account number in your sign up request.*
+2. After signing up [Get Your Access Token](#reference/authentication).
+3. Understand our [Environments](#introduction/available-environments) setup.
+4. Construct your REST API request, using our access-&-sign-up API reference documenation for existing API [Shipping](#reference/shipping) service domain.
+
+
+
+## Available environments
+DHL eCommerce provides **Production** environment as well as **Sandbox** for development and testing.<br/><br/> 
+Access to both environments is managed and you have to use OAuth 2.0 `Access Token`, when accessing the API resources. <br/><br/>
+Access Token could be requested via [Get Access Token API](#introduction/access-&-sign-up), where you have to provide your API credentials: `Client_ID` and `Client_Secret`. 
+
+>**Note:** *You will have different identities for Production and Sandbox environment.*
+
+
+### Sandbox
+You can use the Sandbox environment for development and testing purpose.<br/><br/>
+**Sandbox Base URL:** `https://api-qa.to-be-defined.com`<br/><br/>
+Sandbox provides the same APIs as Production environment. 
+>**Note:** *The APIs exposed on Sandbox could be called directly from this documentation.*
+
+For ease of access you can leverage the default API credentials:<br/>
+ 
+`Client_id: e9ed82a8-4237-4185-8e36-47264aa9e718`
+
+`Client_secret: b1ed1bfa-689b-4d5b-bbf2-39dde64ccb64`<br/>
+
+which could be used to request Access Token for the Sandbox APIs. 
+
+![TEST- or SANDBOX ENVIRONMENT](https://api-qa.dhlecommerce.com/apidoc/images/sandbox.png)
+>**Note:** *Please have in mind that these credentials have more strict rate limits applied, therefore you can experience 429 HTTP Status code.*
+
+### Production
+For production purpose you have to use Production environment.<br/><br/>
+**Production Base URL:** `https://api.to-be-defined.com` <br/>
+
+Production evironment hosts the same APIs as Sandbox, but with different base URL.
+
+![PRODUCTION ENVIRONMENT](https://api-qa.dhlecommerce.com/apidoc/images/prod.png)
+>**Important note:** *Please keep in mind that Sandbox credentials does not apply for production environment and you have to use production set of credentials provided to you during onboarding.*
+
+### Rate limits
+
+For all API calls there is a rate limit applied.<br/><br/> 
+Default limit is set to for each client to **5 requests** per second per API call. <br/><br/>
+When the limit is reached you will recieve an HTTP Status code 429: Too many requests.
+
+**HTTP Response Status Code 429**
+
+````
+{
+"reasons": [{"msg" : "Too many requests in a given amount of time"}],
+"details": {
+            "msgId": "Id-135725589d........."
+            }
+}
+````
+___
+
+## Access & Sign up
+To request access for our Production and Sandbox environments you have to sign up.<br/> 
+
+To sign up with your Deutsche Post `customer account number` and obtain obtain the credentials please contact us directly via [to-be-defined@@deutschepost.de](mailto:to-be-defined@@deutschepost.de). 
+
+>**Note:** *Deutsche Post `customer account number` is required for the API sign up processs. To get your `customer account number` please get in touch with your regional Deutsche Post sales organisation.*
+
+
+>**Note:** *The Sandbox environment is accessible directly from this documentation page, where you can leverage the predefined test requests in [Reference](#reference/authentication) section.*
+
+___
+# Group Authentication
+
+The API provides OAuth 2.0 Access Token with various authorization scopes. The Access Token can be used to authorize access for the Deutsche Post Shipping APIs.
+
+## Access Token [/account/v1/auth/accesstoken]
+
+### Get Access Token [GET]
+
+The Get Access Token API call provides OAuth 2.0 Bearer token with authorization scope, assigned to your client id, which will grants you an access to the Global DHL eCommerce APIs.
+
+The API operation is secured by HTTP Basic authentication, therefore you have to provide **client_id** and **client_secret** as an username and password, when calling the API.
+
+**Example:**
+        
+1. You will receive `client_id` and `client_secret` from DHL representative in following format.<br/>
+Credentials bellow could be used in this Sandbox environment to get the Access Token.
+    ````
+    Client_id: e9ed82a8-4237-4185-8e36-47264aa9e718
+    Client_secret: b1ed1bfa-689b-4d5b-bbf2-39dde64ccb64
+    ````
+2. When passing the `client_id` and `client_secret` via HTTPS request, using HTTP Basic authentication, you have to
+populate HTTP Header Authorization in following format.
+
+    > **Note:** *`Client_id` and `client_secret` has to be encoded in base64-encoding. There is a `space` characeter between Basic and the base64-encoded string. There is a `:` character between the client_id and client_secret, when encoded in base64-encoding.*
+    
+    ````
+    Authorization: Basic base64-encoded(client_id:client_secret)
+    Authorization: Basic ZTllZDgyYTgtNDIzNy00MTg1LThlMzYtNDcyNjRhYTllNzE4OmIxZWQxYmZhLTY4OWItNGQ1Yi1iYmYyLTM5ZGRlNjRjY2I2NA==
+    ````
+    > **Note:** *You can test the Get Access Token API directly from the documentation page. The Authorization HTTP Header was populated for you in the Console View on the right side of the screen.* 
+
+3. You will receive following response in the JSON format.
+
+    ````
+      {
+      "access_token": "FPOJnYACcqZV8YL5Vkm4Ae7nJMvWZDWOJBvD0rtM15BgttWgQEplsQ",
+      "token_type": "Bearer",
+      "expires_in": 18000,
+      "scope": "efulfillment"
+      }
+    ````      
+    
+Understanding of the response fields:
+  
+`access_token:` Contains Access Token string for the Fulfillment API authentication and authorization.<br/><br/>
+
+`token_type:` Type of the OAuth 2.0 access token. Default value is "Bearer".<br/><br/>
+
+`expires_in:` Time to live of the access token. Default value is 18000 seconds / 5 hours. After this time the token expires. <br/><br/>
+
+`scope:` Authorization scope of access token. Default value for Shipping API is "shipping". Could contain multiple scope values, which will be separated by space character.<br/><br/>
+     
+
++ Request
+    There is no body for the request, the API operation will return the Access Token in the Response, when the GET request will be authenticated via HTTP Basic by providing [client_id] and client_secret 
+
+      + Headers
+    
+            Accept: application-json
+            Authorization: Basic ZTllZDgyYTgtNDIzNy00MTg1LThlMzYtNDcyNjRhYTllNzE4OmIxZWQxYmZhLTY4OWItNGQ1Yi1iYmYyLTM5ZGRlNjRjY2I2NA==
+            
+    
++ Response 200 (application/json)
+
+    + Headers
+        
+            X-CorrelationId: Unique transaction id of your request
+    + Body
+            
+            {
+                "access_token":"BvRVUq77c1ubeTqCABXz4daftyFPElLZ5kvLeQqRNb5nT2iFi6aU4L",
+                "token_type":"Bearer",
+                "expires_in":18000,
+                "scope":"shipping label"
+            }
+        
+
+## Access Token Info [/account/v1/auth/accesstoken/info{?token}]
+
+### Get Access Token Info [GET]
+
+The Get Access Token Info API call provides an information about the issued token.
+
++ Parameters
+    + token (optional, string) ... Access Token string
+    
++ Response 200 (application/json)
+Successful response in case you provided valid Access Token
+
+    + Headers
+        
+            X-CorrelationId: Unique transaction id of your request
+    + Body
+    
+            {
+              "audience" : "b0601394-d106-4bca-a825-af40b7422640",
+              "user_id" : "b0601394-d106-4bca-a825-af40b7422640",
+              "scope" : "shipping",
+              "expires_in" : 15951
+            }
+        
+
++ Response 400 (application/json)
+Bad request in case you provided token, which already expired.
+
+    + Headers
+        
+            X-CorrelationId: Unique transaction id of your request
+    + Body
+        
+            {
+              "error" : "invalid_token",
+              "error_description" : "The presented token is invalid or expired."
+            }
+
++ Response 400 (application/json)
+Bad request in case you did not provided the expected URI parameter.
+
+    + Headers
+        
+            X-CorrelationId: Unique transaction id of your request
+    + Body       
+    
+            {
+              "error" : "invalid_request",
+              "error_description" : "The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed."
+            }
+
+## Revoke Access Token [/account/v1/auth/accesstoken/revocation{?token}]
+
+### Revoke Access Token [GET]
+
+The Revoke Access Tokne API call provides you an option to revoke your Access Token, which not yet expired.
+
++ Parameters
+    + token (optional, string) ... Access Token string
+
++ Request
+There is no body for the request.
+    
++ Response 200 (application/json)
+
+    + Headers
+        
+            X-CorrelationId: Unique transaction id of your request
+    + Body
+    
+            [
+                {
+                    "message":"Access token revocation processed."
+                }
+            ]
+            
+
+
+# Group Shipping    
+
+## Items [/items/{itemId}]
+
+### Get the Item Data [GET]
+Get all data for the given item.
+
++ Parameters
+    + itemId (string, required)
+        The id of the item.
++ Request
+There is no body for the request.
+
++ Headers
+    Accept: application-json
+    Authorization: Bearer [token]  
+    Correlation-Id: The correlation id to track this request.
+
++ Response 200 (application/json)
+Successful response 
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Attributes (Item)
+
++ Response 404
+    No item found for the given item id.
+    
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+        
+    + Body
+    
+        {
+            "error" : "Not Found",
+            "error_description" : "No item found for the given item id."
+        }
+
++ Response 500 
+Internal error.
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Body
+        {
+            "error" : "Internal error.",
+            "error_description" : "Internal error."
+        }
+
+## Label [/items/{itemId}/label]
+
+### Retrieve the Label [GET]
+For a given item a label is generated or retrieved from the cache and send to the requestor.
+
++ Headers
+    Accept: application-json
+    Authorization: Bearer [token]  
+    Correlation-Id: The correlation id to track this request.
+    
++ Parameters
+    + itemId (string, required)
+    The id of the item.
+    
++ Request
+There is no body for the request.
+
++ Response 200 (application/json)
+    Successful operation
+
+    + Attributes (array[string])
+
++ Response 404
+    No item found for the given item id.
+    
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+        
+    + Body
+    
+        {
+            "error" : "Not Found",
+            "error_description" : "No item found for the given item id."
+        }
+
++ Response 500 
+Internal error.
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Body
+        {
+            "error" : "Internal error.",
+            "error_description" : "Internal error."
+        }
+
+## Orders [/orders]
+
+### Create an Order [POST]
+Creates a new order based on the given data
+
+    + Headers
+        Accept: application-json
+        Authorization: Bearer [token]  
+        Correlation-Id: The correlation id to track this request.
+        
++ Request
+
+    + Attributes (Order)
+
++ Response 200 (application/json)
+    Successful operation
+
+    + Attributes (Order)
+
++ Response 402
+    Data error.
+    
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+        
+    + Body
+    
+        {
+            "error" : "Data Error",
+            "error_description" : "Data error, please check response message for details."
+        }
+
++ Response 500 
+Internal error.
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Body
+        {
+            "error" : "Internal error.",
+            "error_description" : "Internal error."
+        }
+
+### Get an Order [GET /orders/{orderId}]
+Searches the order for the gigen orderId.
+
++ Parameters
+    + orderId (string, required)
+        The id of the order that the user wants to retrieve.
+
++ Request
+There is no body for the request.
+
++ Response 200 (application/json)
+    successful operation
+
+    + Attributes (Order)
+
++ Response 404 
+    No order for the given orderId.
+
++ Response 500 
+    Internal error.
+
+### Retrieve All Labels [GET /orders/{orderId}/labels]
+For a given order all label are generated or retrieved from the cache and send to the requestor.
+
++ Parameters
+    + orderId (string, required)
+        The id of the item.
+
++ Request
+There is no body for the request.
+       
++ Response 200 (application/json)
+    Successful operation
+
+    + Attributes (Order)
+
++ Response 404
+    No item found for the given item id.
+    
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+        
+    + Body
+    
+        {
+            "error" : "Not Found",
+            "error_description" : "No order found for the given order id."
+        }
+
++ Response 500 
+Internal error.
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Body
+        {
+            "error" : "Internal error.",
+            "error_description" : "Internal error."
+        }
+
+## Shipments [/shipments/{shipmentId}]
+### Retrieve the Shipment Data [GET]
+For a given shipment id all available data will be send.
+
++ Parameters
+    + shipmentId (string, required)
+        The id of the shipment.
++ Request
+There is no body for the request.
+
++ Response 200 (application/json)
+    Successful operation
+
+    + Attributes (Shipment)
+
++ Response 404
+    No item found for the given item id.
+    
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+        
+    + Body
+    
+        {
+            "error" : "Not Found",
+            "error_description" : "No order found for the given order id."
+        }
+
++ Response 500 
+Internal error.
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Body
+        {
+            "error" : "Internal error.",
+            "error_description" : "Internal error."
+        }
+
+### Retrieve the AWB [GET /shipments/{shipmentId}/awb]
+For a given shipment an AWB is generated or retrieved from the cache and send to the requestor.
+
++ Parameters
+    + shipmentId (string, required)
+        The id of the shipment.
+
++ Request
+There is no body for the request.
+
++ Response 200 (application/json)
+    Successful operation
+
+    + Attributes (string)
+
++ Response 404
+    No shipment found for the given awb barcode.
+    
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+        
+    + Body
+    
+        {
+            "error" : "Not Found",
+            "error_description" : "No shipment found for the given awb barcode."
+        }
+
++ Response 500 
+Internal error.
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Body
+        {
+            "error" : "Internal error.",
+            "error_description" : "Internal error."
+        }
+
+### Retrieve the Labels for all Items [GET /shipments/{shipmentId}/labels]
+For a given shipment all item labels will be generated or retrieved from the cache and send to the requestor.
+
++ Parameters
+    + shipmentId (string, required)
+        The id of the shipment.
+        
++ Request
+There is no body for the request.
+
++ Response 200 (application/json)
+    Successful operation
+
+    + Attributes (string)
+
++ Response 404
+    No shipment found for the given id/awb barcode.
+    
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+        
+    + Body
+    
+        {
+            "error" : "Not Found",
+            "error_description" : "No shipment found for the given id/awb barcode."
+        }
+
++ Response 500 
+Internal error.
+
+    + Headers
+        X-CorrelationId: Unique transaction id of your request
+    
+    + Body
+        {
+            "error" : "Internal error.",
+            "error_description" : "Internal error."
+        }
+
+
+# Group API Responses
+Eachtime you request our API you receive one of HTTP response code listed underneath.<br/><br/>
+In case you do not get any response code back at all, please check the [API health](#introduction/api-health) first to see whether or not there is an issue on our backend side. <br/><br/>
+In case the API status is **live**, please check the calls you composed, your links as well as the credentials or token used.<br/><br/>
+___
+- **200** `OK` - the request was successful (some calls may also return 201 instead).
+___
+- **201** `Created` - the request was successful and a resource was created.
+___
+- **204** `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+___
+- **400** `Bad Request` - the request could not be understood or was missing required parameters. An invalid URI parameters or querystring was used.
+___
+- **401** `Unauthorized` - authentication failed or user doesn't have permissions for requested operation. Invalid client id and secret provided
+___
+- **402** `Unauthorized` - Some tesxt
+___
+- **403** `Forbidden` - access denied.
+___
+- **404** `Not Found` - resource was not found.
+___
+- **405** `Method Not Allowed` - Requested method is not supported for resource.
+___
+- **429** `Too many requests` -  You called the API too often in a given timeframe and exceeded the rate limits.
+___
+- **503** `Service unavailable` - The service you requested is not available
+___
+
+# Data Structures
+
+## Content (object)
++ `contentPieceIndexNumber`: `1` (number, required) 
++ `contentPieceHsCode`: `HS1234567890` (string, required) 
++ `contentPieceDescription`: `Trousers` (string, required) 
++ `contentPieceNumber`: `2` (number, required) 
++ `contentPieceNetweight`: `1200` (number, required) 
++ `contentPieceOrigin`: `DE` (string, required) 
++ `contentPieceAmount`: `120.5` (number, required) 
++ `contentPieceCurrency`: `EUR` (string, required) 
+
+
+## Item (object)
++ `product` (enum[string], required) 
+    + `GPP`
+    + `GMP`
+    + `GMM`
+    + `GMR`
+    + `GPT`
++ `serviceLevel` (enum[string], required) 
+    + `PRIORITY`
+    + `STANDARD`
+    + `REGISTERED`
++ `recipient`: `Alfred J. Quack` (string, required) 
++ `addressLine1`: `Mustergasse 12` (string, required) 
++ `city`: `Dresden` (string, required) 
++ `postalCode`: `01432` (string, required) 
++ `destinationCountry`: `DE` (string, required) 
++ `id`: `1` (number, optional) 
++ `barcode`: `BC123456789` (string, optional) 
++ `order` (string, optional) 
++ `shipment` (string, optional) 
++ `custRef`: `REF-2361890-AB` (string, optional) 
++ `recipientPhone`: `+4935120681234` (string, optional) 
++ `recipientFax`: `+4935120681234` (string, optional) 
++ `recipientEmail`: `alfred.j.quack@somewhere.eu` (string, optional) 
++ `addressLine2`: `Hinterhaus` (string, optional) 
++ `addressLine3`: `1. Etage` (string, optional) 
++ `state`: `Sachsen` (string, optional) 
++ `originCountry`: `AU` (string, optional) 
++ `shipmentAmount`: `100` (number, optional) 
++ `shipmentCurrency`: `EUR` (string, optional) 
++ `shipmentGrossWeight`: `1500` (number, optional) 
++ `shipmentNaturetype`: `1` (string, optional) 
++ `contents`: `1` (Content, optional) 
+
+
+## OrderItem (object)
++ `product` (enum[string], required) 
+    + `GPP`
+    + `GMP`
+    + `GMM`
+    + `GMR`
+    + `GPT`
++ `serviceLevel` (enum[string], required) 
+    + `PRIORITY`
+    + `STANDARD`
+    + `REGISTERED`
++ `recipient`: `Alfred J. Quack` (string, required) 
++ `addressLine1`: `Mustergasse 12` (string, required) 
++ `city`: `Dresden` (string, required) 
++ `postalCode`: `01432` (string, required) 
++ `destinationCountry`: `DE` (string, required) 
++ `id`: `1` (number, optional) 
++ `barcode`: `BC123456789` (string, optional) 
++ `order` (string, optional) 
++ `shipment` (string, optional) 
++ `custRef`: `REF-2361890-AB` (string, optional) 
++ `recipientPhone`: `+4935120681234` (string, optional) 
++ `recipientFax`: `+4935120681234` (string, optional) 
++ `recipientEmail`: `alfred.j.quack@somewhere.eu` (string, optional) 
++ `addressLine2`: `Hinterhaus` (string, optional) 
++ `addressLine3`: `1. Etage` (string, optional) 
++ `state`: `Sachsen` (string, optional) 
++ `originCountry`: `AU` (string, optional) 
++ `shipmentAmount`: `100` (number, optional) 
++ `shipmentCurrency`: `EUR` (string, optional) 
++ `shipmentGrossWeight`: `1500` (number, optional) 
++ `shipmentNaturetype`: `1` (string, optional) 
++ `contents`: `1` (Content, optional) 
+
+
+## ShipmentItem (object)
++ `product` (enum[string], required) 
+    + `GPP`
+    + `GMP`
+    + `GMM`
+    + `GMR`
+    + `GPT`
++ `serviceLevel` (enum[string], required) 
+    + `PRIORITY`
+    + `STANDARD`
+    + `REGISTERED`
++ `recipient`: `Alfred J. Quack` (string, required) 
++ `addressLine1`: `Mustergasse 12` (string, required) 
++ `city`: `Dresden` (string, required) 
++ `postalCode`: `01432` (string, required) 
++ `destinationCountry`: `DE` (string, required) 
++ `id`: `1` (number, optional) 
++ `barcode`: `BC123456789` (string, optional) 
++ `order` (string, optional) 
++ `shipment` (string, optional) 
++ `custRef`: `REF-2361890-AB` (string, optional) 
++ `recipientPhone`: `+4935120681234` (string, optional) 
++ `recipientFax`: `+4935120681234` (string, optional) 
++ `recipientEmail`: `alfred.j.quack@somewhere.eu` (string, optional) 
++ `addressLine2`: `Hinterhaus` (string, optional) 
++ `addressLine3`: `1. Etage` (string, optional) 
++ `state`: `Sachsen` (string, optional) 
++ `originCountry`: `AU` (string, optional) 
++ `shipmentAmount`: `100` (number, optional) 
++ `shipmentCurrency`: `EUR` (string, optional) 
++ `shipmentGrossWeight`: `1500` (number, optional) 
++ `shipmentNaturetype`: `1` (string, optional) 
++ `contents`: `1` (Content, optional) 
+
+
+## Order (object)
++ `customerEkp`: `ekp_123456` (string, required) 
++ `orderId`: `1234` (number, required) 
++ `orderItems`: `1234` (OrderItem, optional) 
++ `shipments`: `1234` (Shipment, optional) 
+
+
+## Shipment (object)
+
++ `awb`: `AWB123456789` (string, required) 
++ `shipmentItems`: `AWB123456789` (ShipmentItem, optional)

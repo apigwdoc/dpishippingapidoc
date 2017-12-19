@@ -255,7 +255,7 @@ Get all data for the given item.
 + Parameters
     + itemId (string, required)
         The id of the item.
-+ Request
++ Request (application/json)
 There is no body for the request.
 
 + Headers
@@ -310,7 +310,7 @@ For a given item a label is generated or retrieved from the cache and send to th
     + itemId (string, required)
     The id of the item.
     
-+ Request
++ Request (application/json)
 There is no body for the request.
 
 + Response 200 (application/json)
@@ -353,11 +353,11 @@ Creates a new order based on the given data
     Authorization: Bearer [token]  
     Correlation-Id: The correlation id to track this request.
         
-+ Request
++ Request (application/json)
 
     + Body
 
-    + Attributes (Order)
+    + Schema (Order)
 
 + Response 200 (application/json)
     Successful operation
@@ -396,7 +396,7 @@ Searches the order for the gigen orderId.
     + orderId (string, required)
         The id of the order that the user wants to retrieve.
 
-+ Request
++ Request (application/json)
 There is no body for the request.
 
 + Response 200 (application/json)
@@ -417,7 +417,7 @@ For a given order all label are generated or retrieved from the cache and send t
     + orderId (string, required)
         The id of the item.
 
-+ Request
++ Request (application/json)
 There is no body for the request.
        
 + Response 200 (application/json)
@@ -457,7 +457,7 @@ For a given shipment id all available data will be send.
 + Parameters
     + shipmentId (string, required)
         The id of the shipment.
-+ Request
++ Request (application/json)
 There is no body for the request.
 
 + Response 200 (application/json)
@@ -497,7 +497,7 @@ For a given shipment an AWB is generated or retrieved from the cache and send to
     + shipmentId (string, required)
         The id of the shipment.
 
-+ Request
++ Request (application/json)
 There is no body for the request.
 
 + Response 200 (application/json)
@@ -537,7 +537,7 @@ For a given shipment all item labels will be generated or retrieved from the cac
     + shipmentId (string, required)
         The id of the shipment.
         
-+ Request
++ Request (application/json)
 There is no body for the request.
 
 + Response 200 (application/json)
